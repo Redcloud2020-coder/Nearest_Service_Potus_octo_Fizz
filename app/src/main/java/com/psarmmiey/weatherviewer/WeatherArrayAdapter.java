@@ -28,8 +28,8 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
     // stores already downloaded Bitmaps for reuse
     private Map<String, Bitmap> bitmaps = new HashMap<>();
 
-    // construtor to initialize inherited member
+    // constructor to initialize inherited member
     public WeatherArrayAdapter(Context context, List<Weather> forecast) {
-        super (context, -1, forecast)
+        super (context, -1, forecast);
     }
  }
