@@ -2,6 +2,8 @@ package com.psarmmiey.weatherviewer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +96,46 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
                 context.getString(R.string.humidity, day.humidity));
 
         return convertView; // return completed list item to display
+    }
 
+    // AsyncTask to load weather condition icons in a separate thread
+    private class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
+        private ImageView imageView; // displays the thumbnail
+
+        // store ImageView on which to set the download Bitmap
+        public LoadImageTask(ImageView imageView) {
+            this.imageView = imageView;
+        }
+
+        // load image; params[0] is the String URL representing the image
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            Bitmap bitmap = null;
+            HttpURLConnection connection = null;
+
+            try {
+                URL url = new URL(params[0]); // create URL for image
+
+                // open an HttpURLConnection, get its InputStream
+                // and download the image
+                connection = (HttpURLConnection) url.openConnection();
+
+                try (InputStream inputStream = connection.getInputStream()) {
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                    bitmaps.put(params[0], bitmap); // cache for later use
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+                connection.disconnect(); // close the HttpURLConnection
+            }
+
+            return bitmap;
+        }
     }
  }
