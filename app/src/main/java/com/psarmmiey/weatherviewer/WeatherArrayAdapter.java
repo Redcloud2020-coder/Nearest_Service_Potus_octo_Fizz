@@ -74,7 +74,7 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
         }
 
         // if weather condition icon already downloaded, use it;
-        // otherwie, download icon in a separate thread
+        // otherwise, download icon in a separate thread
         // download and display weather condition image
         if (bitmaps.containsKey(day.iconURL)) {
             viewHolder.conditionImageView.setImageBitmap(
