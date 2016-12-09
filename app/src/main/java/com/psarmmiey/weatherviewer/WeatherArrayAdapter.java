@@ -87,11 +87,11 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
         // get other data from Weather object and place into views
         Context context = getContext(); // for loading String resources
         viewHolder.dayTextView.setText(context.getString(
-                R.string.day_description, day.dayOfWeek, day.description));
+                R.string.day_description, day.nameOfPlace, day.description));
         viewHolder.lowTextView.setText(
-                context.getString(R.string.low_temp, day.minTemp));
+                context.getString(R.string.low_temp, day.lat));
         viewHolder.hiTextView.setText(
-                context.getString(R.string.high_temp, day.maxTemp));
+                context.getString(R.string.high_temp, day.lng));
         viewHolder.humidityTextView.setText(
                 context.getString(R.string.humidity, day.humidity));
 
