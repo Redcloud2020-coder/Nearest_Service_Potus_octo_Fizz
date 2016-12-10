@@ -29,7 +29,8 @@
             android:text="LargeText"
             android:layout_columnSpan="3"
             android:fontFamily="sans-serif"
-            android:typeface="normal" />
+            android:typeface="normal"
+            android:textAlignment="viewStart" />
 
         <TextView
             android:layout_width="wrap_content"
