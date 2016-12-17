@@ -44,16 +44,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
+
+    final int PERMISSION_ACCESS_COARSE_LOCATION = 0;
     // List of weather objects representing the forecast
     private List<Weather> weatherList = new ArrayList<>();
     private GoogleApiClient mGoogleApiClient;
-
     private double mlong;
     private double mlat;
     private double finalLat;
-
-final int PERMISSION_ACCESS_COARSE_LOCATION = 0;
-
     private double finalLong;
 
     // ArrayAdapter for binding weather objects to a ListView
@@ -132,8 +130,8 @@ final int PERMISSION_ACCESS_COARSE_LOCATION = 0;
                 // hide keyboard and initiate a GetWeatherTask to download
                 // weather data from OpenWeatherMap.org in a separate thread
                 if (url != null) {
-                   dismissKeyboard(locationEditText);
-                   Snackbar.make(findViewById(R.id.coordinatorLayout),
+                    dismissKeyboard(locationEditText);
+                    Snackbar.make(findViewById(R.id.coordinatorLayout),
                             R.string.loading, Snackbar.LENGTH_LONG).show();
                     GetWeatherTask getLocalWeatherTask = new GetWeatherTask();
                     getLocalWeatherTask.execute(url);
@@ -152,7 +150,7 @@ final int PERMISSION_ACCESS_COARSE_LOCATION = 0;
     private void dismissKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(
                 Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
     }
 
@@ -215,18 +213,20 @@ final int PERMISSION_ACCESS_COARSE_LOCATION = 0;
         String apiKey = getString(R.string.api_key);
         String baseUrl = getString(R.string.web_service_url);
         double lat = 1.0;
-        double longitude = 2.0;
         String order = "&rankby=distance&";
-        String location = "-33.8670522,151.1957362&";
+        //  String location = "-33.8670522,151.1957362&";
 
 
         try {
             // create URL for specified city and imperial units (Fahrenheit)
             System.out.print(getMlat());
             String urlString;
-            urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+getMlat()+","+getMlong()+"&rankby=distance"+"&name="+places+"&key=AIzaSyA7f3V7984G9n8LggAe5xL2wuCq0874sbs";
+            urlString =
+                    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="
+                            +getMlat()+","+getMlong()+"&rankby=distance"+
+                            "&name="+places+"&key=AIzaSyA7f3V7984G9n8LggAe5xL2wuCq0874sbs";
 
-               return new URL(urlString);
+            return new URL(urlString);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -242,8 +242,86 @@ final int PERMISSION_ACCESS_COARSE_LOCATION = 0;
     // makes the REST web services call to get weather data and
     // saves the data to a local HTML file
 
+    // create Weather objects from JSONObject containing the forecast
+    private void convertJSONtoArrayList(JSONObject forecast) {
+        weatherList.clear(); // clear old weather data
+
+        try {
+            // get forecast's "list" JSONArray
+            JSONArray list = forecast.getJSONArray("results");
+            if (forecast.getJSONArray("results") == null) {
+                Snackbar.make(findViewById(R.id.coordinatorLayout),
+                        R.string.read_error, Snackbar.LENGTH_LONG).show();
+            }
+            //  list = setJSONArray("a") ;
+            // convert each element of list to a Weather object
+            for (int i = 0; i < list.length(); ++i) {
+                JSONObject place = list.getJSONObject(i); // get one day's data
+                JSONObject north = place.getJSONObject("geometry");
+                JSONObject location =   north.getJSONObject("location");
+
+                // set destination latitude and logitude
+                setFinalLat(location.getDouble("lat"));
+                setFinalLong(location.getDouble("lng"));
+                Snackbar.make(findViewById(R.id.coordinatorLayout),
+                        R.string.loading, Snackbar.LENGTH_LONG).show();
+                weatherList.add(new Weather(
+                        place.getString("name"), // name of place
+                        getFinalLat(), // distance between current location and destination
+                        getFinalLong(),// maximum temperature-
+                        calcDistance(getMlat(),getMlong(),location.getDouble("lat"), location.getDouble("lng")), // Distance
+                        place.getString("vicinity"), // place description
+                        place.getString("icon"))); // icon name
+                weatherListView.setOnItemClickListener(
+                        new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                                //  setContentView(R.layout.activity_maps);
+                                Uri gmmIntentUri = Uri.parse(new StringBuilder().append("google.navigation:q=").append(getFinalLat()).append(",").append(getFinalLong()).toString());
+
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                            }
+                        }
+                );
+            }
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private  double calcDistance(double latA, double longA, double latB, double longB) {
+        Location  locationA = new Location("Initial");
+        locationA.setLatitude(latA);
+        locationA.setLongitude(longA);
+        Location locationB = new Location("Final");
+        locationB.setLatitude(latB);
+        locationB.setLongitude(longB);
+        double distance = (locationA.distanceTo(locationB))/1000;
+        return distance;
+    }
+
+    public double getFinalLong() {
+        return finalLong;
+    }
+
+    public void setFinalLong(double finalLong) {
+        this.finalLong = finalLong;
+    }
+
+    public double getFinalLat() {
+        return finalLat;
+    }
+
+    public void setFinalLat(double finalLat) {
+        this.finalLat = finalLat;
+    }
+
     private class GetWeatherTask
-        extends AsyncTask<URL, Void, JSONObject> {
+            extends AsyncTask<URL, Void, JSONObject> {
         @Override
         protected JSONObject doInBackground(URL... params) {
             HttpURLConnection connection = null;
@@ -280,7 +358,7 @@ final int PERMISSION_ACCESS_COARSE_LOCATION = 0;
                         R.string.connect_error, Snackbar.LENGTH_LONG).show();
             }
             finally {
-                 connection.disconnect(); // close the httpURLConnection
+                connection.disconnect(); // close the httpURLConnection
             }
             return null;
         }
@@ -288,93 +366,12 @@ final int PERMISSION_ACCESS_COARSE_LOCATION = 0;
         // process JSON response and update ListView
         //@Override
         protected void onPostExecute(JSONObject weather) {
+            // Spinner spinner = new Spinner();
             convertJSONtoArrayList( weather); // repopulate weatherList
             System.out.println(weather);
             weatherArrayAdapter.notifyDataSetChanged(); // rebind to ListView
             weatherListView.smoothScrollToPosition(0); // scroll to top
         }
-    }
-
-
-    // create Weather objects from JSONObject containing the forecast
-    private void convertJSONtoArrayList(JSONObject forecast) {
-        weatherList.clear(); // clear old weather data
-
-        try {
-            // get forecast's "list" JSONAr
-            // ray
-            JSONArray list = forecast.getJSONArray("results");
-            if (forecast.getJSONArray("results") == null) {
-                Snackbar.make(findViewById(R.id.coordinatorLayout),
-                        R.string.read_error, Snackbar.LENGTH_LONG).show();
-            }
-            //  list = setJSONArray("a") ;
-            // convert each element of list to a Weather object
-            for (int i = 0; i < list.length(); ++i) {
-                JSONObject place = list.getJSONObject(i); // get one day's data
-                JSONObject north = place.getJSONObject("geometry");
-                JSONObject location =   north.getJSONObject("location");
-
-                // set destination latitude and logitude
-                setFinalLat(location.getDouble("lat"));
-                setFinalLong(location.getDouble("lng"));
-                Snackbar.make(findViewById(R.id.coordinatorLayout),
-                        R.string.loading, Snackbar.LENGTH_LONG).show();
-                weatherList.add(new Weather(
-                        place.getString("name").toString(), // name of place
-                        getFinalLat(), // distance between current location and destination
-                        getFinalLong(),// maximum temperature-
-                        calcDistance(getMlat(),getMlong(),location.getDouble("lat"), location.getDouble("lng")), // Distance
-                        place.getString("vicinity").toString(), // place description
-                        place.getString("icon").toString())); // icon name
-                weatherListView.setOnItemClickListener(
-                        new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Uri gmmIntentUri;
-                                gmmIntentUri = Uri.parse(new StringBuilder().append("google.navigation:q=")
-                                        .append(getFinalLat()).append(",").append(getFinalLong()).toString());
-
-                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                mapIntent.setPackage("com.google.android.apps.maps");
-                                startActivity(mapIntent);
-                            }
-                        }
-                );
-
-            }
-
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private  double calcDistance(double latA, double longA, double latB, double longB) {
-        Location  locationA = new Location("Initial");
-        locationA.setLatitude(latA);
-        locationA.setLongitude(longA);
-        Location locationB = new Location("Final");
-        locationB.setLatitude(latB);
-        locationB.setLongitude(longB);
-        double distance = (locationA.distanceTo(locationB))/1000;
-        return distance;
-    }
-
-    public double getFinalLong() {
-        return finalLong;
-    }
-
-    public void setFinalLong(double finalLong) {
-        this.finalLong = finalLong;
-    }
-
-    public double getFinalLat() {
-        return finalLat;
-    }
-
-    public void setFinalLat(double finalLat) {
-        this.finalLat = finalLat;
     }
 }
 
