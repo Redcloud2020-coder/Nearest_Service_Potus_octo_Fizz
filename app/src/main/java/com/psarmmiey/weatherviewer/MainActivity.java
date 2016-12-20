@@ -21,6 +21,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -90,7 +91,9 @@ public class MainActivity extends AppCompatActivity
         // create ArrayAdapter to bind weatherList to the weatherListView
         weatherListView = (ListView) findViewById(R.id.weatherListView);
         weatherArrayAdapter = new WeatherArrayAdapter(this, weatherList);
+
         weatherListView.setAdapter(weatherArrayAdapter);
+
 
        final ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
 
@@ -147,8 +150,7 @@ public class MainActivity extends AppCompatActivity
                     dismissKeyboard(locationEditText);
 
                     loadingSpin.setVisibility(View.VISIBLE);
-                    Snackbar.make(findViewById(R.id.coordinatorLayout),
-                            R.string.loading, Snackbar.LENGTH_LONG).show();
+
                     GetWeatherTask getLocalWeatherTask = new GetWeatherTask();
                     getLocalWeatherTask.execute(url);
                 } else {
@@ -259,11 +261,6 @@ public class MainActivity extends AppCompatActivity
                 R.string.internet_error, Snackbar.LENGTH_LONG).show();
     }
 
-
-
-    // makes the REST web services call to get weather data and
-    // saves the data to a local HTML file
-
     // create Weather objects from JSONObject containing the forecast
     private void convertJSONtoArrayList(JSONObject forecast) {
         weatherList.clear(); // clear old weather data
@@ -275,33 +272,48 @@ public class MainActivity extends AppCompatActivity
                 Snackbar.make(findViewById(R.id.coordinatorLayout),
                         R.string.read_error, Snackbar.LENGTH_LONG).show();
             }
-            //  list = setJSONArray("a") ;
-            // convert each element of list to a Weather object
+
             for (int i = 0; i < list.length(); ++i) {
+
                 JSONObject place = list.getJSONObject(i); // get one day's data
                 JSONObject north = place.getJSONObject("geometry");
                 JSONObject location = north.getJSONObject("location");
 
-                // set destination latitude and logitude
+                // set destination latitude and longitude
                 setFinalLat(location.getDouble("lat"));
                 setFinalLong(location.getDouble("lng"));
-                Snackbar.make(findViewById(R.id.coordinatorLayout),
-                        R.string.loading, Snackbar.LENGTH_LONG).show();
 
                 ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
                 loadingSpin.setVisibility(View.GONE);
+
+                Button optionButton = (Button) findViewById(R.id.listOptionButton);
+                optionButton.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                               Uri gmmIntentUri = Uri.parse(new StringBuilder().append("google.navigation:q=").append(getFinalLat()).append(",").append(getFinalLong()).toString());
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                            }
+                        }
+                );
                 weatherList.add(new Weather(
                         place.getString("name"), // name of place
                         getFinalLat(), // distance between current location and destination
-                        getFinalLong(),// maximum temperature-
+                        getFinalLong(),// maximum temperature
                         calcDistance(getMlat(), getMlong(), location.getDouble("lat"), location.getDouble("lng")), // Distance
                         place.getString("vicinity"), // place description
                         place.getString("icon"))); // icon name
+
+
                 weatherListView.setOnItemClickListener(
                         new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Uri gmmIntentUri = Uri.parse(new StringBuilder().append("google.navigation:q=").append(getFinalLat()).append(",").append(getFinalLong()).toString());
+                                Uri gmmIntentUri =
+                                        Uri.parse(new StringBuilder().append("google.navigation:q=")
+                                                .append(getFinalLat()).append(",").append(getFinalLong()).toString());
                                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                                 mapIntent.setPackage("com.google.android.apps.maps");
                                 startActivity(mapIntent);
@@ -309,10 +321,14 @@ public class MainActivity extends AppCompatActivity
                         }
                 );
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+    // makes the REST web services call to get weather data and
+    // saves the data to a local HTML file
 
     private double calcDistance(double latA, double longA, double latB, double longB) {
         Location locationA = new Location("Initial");
@@ -383,12 +399,17 @@ public class MainActivity extends AppCompatActivity
         // process JSON response and update ListView
         //@Override
         protected void onPostExecute(JSONObject weather) {
-            // Spinner spinner = new Spinner();
+
             convertJSONtoArrayList(weather); // repopulate weatherList
             System.out.println(weather);
+
             weatherArrayAdapter.notifyDataSetChanged(); // rebind to ListView
             weatherListView.smoothScrollToPosition(0); // scroll to top
+
+
         }
     }
+
+
 }
 

@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:contextClickable="true"
+    android:focusable="true"
     android:orientation="horizontal">
 
     <ImageView
@@ -10,24 +12,31 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/place_description_image"
         android:drawingCacheQuality="auto"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:scaleType="fitCenter" />
 
     <GridLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:columnCount="3"
+        android:layout_weight="0.86"
+        android:clickable="false"
+        android:columnCount="4"
+        android:focusable="false"
         android:orientation="vertical"
-        android:rowCount="2"
+        android:rowCount="3"
         android:useDefaultMargins="true">
 
         <TextView
             android:id="@+id/dayTextView"
-            android:layout_width="match_parent"
+            android:layout_width="266dp"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_columnSpan="3"
             android:capitalize="words"
+            android:clickable="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:fontFamily="sans-serif"
             android:text="LargeText"
             android:textAlignment="viewStart"
@@ -38,9 +47,11 @@
             android:id="@+id/humidityTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="0"
+            android:layout_column="2"
             android:layout_columnWeight="1"
             android:layout_row="1"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:fontFamily="sans-serif"
             android:text="New Text" />
 
@@ -51,16 +62,31 @@
             android:layout_column="1"
             android:layout_columnWeight="1"
             android:layout_row="1"
-            android:text="New Text"/>
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:text="New Text" />
 
         <TextView
             android:id="@+id/hiTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_column="2"
+            android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_row="1"
             android:text="New Text"/>
+
+        <Button
+            android:id="@+id/listOptionButton"
+            android:layout_width="19dp"
+            android:layout_height="24dp"
+            android:layout_column="3"
+            android:layout_margin="2dp"
+            android:layout_row="0"
+            android:background="@android:color/transparent"
+            android:elevation="8dp"
+            android:foreground="@drawable/ic_more_vert_black_24dp"
+            android:padding="2dp"
+            android:textColor="?android:attr/textColorSecondary" />
 
     </GridLayout>
 
