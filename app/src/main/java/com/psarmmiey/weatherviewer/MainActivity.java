@@ -21,7 +21,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -48,9 +47,9 @@ public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
-    final int PERMISSION_ACCESS_COARSE_LOCATION = 0;
+    private final int PERMISSION_ACCESS_COARSE_LOCATION = 0;
     // List of weather objects representing the forecast
-    private List<Weather> weatherList = new ArrayList<>();
+    private final List<Weather> weatherList = new ArrayList<>();
     private GoogleApiClient mGoogleApiClient;
     private double mlong;
     private double mlat;
@@ -60,7 +59,6 @@ public class MainActivity extends AppCompatActivity
     // ArrayAdapter for binding weather objects to a ListView
     private WeatherArrayAdapter weatherArrayAdapter;
     private ListView weatherListView; // displays weather info
-    private String city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +93,7 @@ public class MainActivity extends AppCompatActivity
         weatherListView.setAdapter(weatherArrayAdapter);
 
 
-       final ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
+        final ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
 
         EditText locationEditText = (EditText) findViewById(R.id.locationEditText);
         locationEditText.setOnClickListener(
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
                 EditText locationEditText =
                         (EditText) findViewById(R.id.locationEditText);
-                if (keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
+                if (keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
                     URL url = createURL(locationEditText.getText().toString());
 
                     // hide keyboard and initiate a GetWeatherTask to download
@@ -191,11 +189,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_ACCESS_COARSE_LOCATION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // All good!
+                    Snackbar.make(findViewById(R.id.coordinatorLayout),
+                            "Location Access Granted", Snackbar.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(this, "Need your location!", Toast.LENGTH_SHORT).show();
                 }
@@ -204,19 +204,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public double getMlong() {
+    private double getMlong() {
         return mlong;
     }
 
-    public void setMlong(double mlong) {
+    private void setMlong(double mlong) {
         this.mlong = mlong;
     }
 
-    public double getMlat() {
+    private double getMlat() {
         return mlat;
     }
 
-    public void setMlat(double mlat) {
+    private void setMlat(double mlat) {
         this.mlat = mlat;
     }
 
@@ -229,7 +229,6 @@ public class MainActivity extends AppCompatActivity
     // create google places web service URL using the service intended
     @Nullable
     private URL createURL(String places) {
-        this.city = places;
         String apiKey = getString(R.string.api_key);
         String baseUrl = getString(R.string.web_service_url);
         double lat = 1.0;
@@ -286,18 +285,7 @@ public class MainActivity extends AppCompatActivity
                 ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
                 loadingSpin.setVisibility(View.GONE);
 
-                Button optionButton = (Button) findViewById(R.id.listOptionButton);
-                optionButton.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                               Uri gmmIntentUri = Uri.parse(new StringBuilder().append("google.navigation:q=").append(getFinalLat()).append(",").append(getFinalLong()).toString());
-                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                mapIntent.setPackage("com.google.android.apps.maps");
-                                startActivity(mapIntent);
-                            }
-                        }
-                );
+
                 weatherList.add(new Weather(
                         place.getString("name"), // name of place
                         getFinalLat(), // distance between current location and destination
@@ -312,8 +300,8 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 Uri gmmIntentUri =
-                                        Uri.parse(new StringBuilder().append("google.navigation:q=")
-                                                .append(getFinalLat()).append(",").append(getFinalLong()).toString());
+                                        Uri.parse("google.navigation:q=" +
+                                                getFinalLat() + "," + getFinalLong());
                                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                                 mapIntent.setPackage("com.google.android.apps.maps");
                                 startActivity(mapIntent);
@@ -337,23 +325,22 @@ public class MainActivity extends AppCompatActivity
         Location locationB = new Location("Final");
         locationB.setLatitude(latB);
         locationB.setLongitude(longB);
-        double distance = (locationA.distanceTo(locationB)) / 1000;
-        return distance;
+        return (double) ((locationA.distanceTo(locationB)) / 1000);
     }
 
-    public double getFinalLong() {
+    private double getFinalLong() {
         return finalLong;
     }
 
-    public void setFinalLong(double finalLong) {
+    private void setFinalLong(double finalLong) {
         this.finalLong = finalLong;
     }
 
-    public double getFinalLat() {
+    private double getFinalLat() {
         return finalLat;
     }
 
-    public void setFinalLat(double finalLat) {
+    private void setFinalLat(double finalLat) {
         this.finalLat = finalLat;
     }
 
@@ -391,6 +378,7 @@ public class MainActivity extends AppCompatActivity
                 Snackbar.make(findViewById(R.id.coordinatorLayout),
                         R.string.connect_error, Snackbar.LENGTH_LONG).show();
             } finally {
+                assert connection != null;
                 connection.disconnect(); // close the httpURLConnection
             }
             return null;

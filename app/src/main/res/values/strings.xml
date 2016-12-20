@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Close By</string>
-    <string name="action_settings">Settings</string>
     <string name="api_key">AIzaSyA7f3V7984G9n8LggAe5xL2wuCq0874sbs</string>
     <string name="web_service_url">https://maps.googleapis.com/maps/api/place/nearbysearch/json?</string>
     <string name="invalid_url">Invalid URL</string>
@@ -12,12 +11,8 @@
     <string name="hint_text">Enter the type of service you want(e.g Bank, Restaurant, ATM)</string>
     <string name="read_error">This type of service is not available in this area</string>
     <string name="connect_error">Unable to connect to Google Maps Servers</string>
-    <string name="loading">Loading...</string>
-    <string name="title_activity_maps">Map</string>
     <string name="internet_error">Can\'t connect to the internet</string>
-    <string name="title_activity_detail">detailActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="place_detail_name" />
 </resources>

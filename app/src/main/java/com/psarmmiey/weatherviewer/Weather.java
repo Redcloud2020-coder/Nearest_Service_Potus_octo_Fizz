@@ -39,8 +39,10 @@ class Weather {
 
     }
 
-    public Weather(String name, double lat, double aLong, double distance, String icon) {
-    }
+// --Commented out by Inspection START (12/20/16 2:07 PM):
+//    public Weather(String name, double lat, double aLong, double distance, String icon) {
+//    }
+// --Commented out by Inspection STOP (12/20/16 2:07 PM)
 
     // convert timestamp to a day's name(e.g., Monday, Tuesday, ...)
     private static String convertTimeStampToDay(long timestamp) {

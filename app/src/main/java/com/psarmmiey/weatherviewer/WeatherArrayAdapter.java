@@ -1,13 +1,17 @@
 package com.psarmmiey.weatherviewer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,29 +27,21 @@ import java.util.Map;
  */
 
 class WeatherArrayAdapter extends ArrayAdapter<Weather> {
-    // class fpr reusing views as list items scroll off and onto the screen
-    private static class ViewHolder {
-        ImageView conditionImageView;
-        TextView dayTextView;
-        TextView lowTextView;
-        TextView hiTextView;
-        TextView humidityTextView;
-    }
-
-
     // stores already downloaded Bitmaps for reuse
-    private Map<String, Bitmap> bitmaps = new HashMap<>();
+    private final Map<String, Bitmap> bitmaps = new HashMap<>();
+
 
     // constructor to initialize inherited member
     public WeatherArrayAdapter(Context context, List<Weather> forecast) {
-        super (context, -1, forecast);
+        super(context, -1, forecast);
     }
 
     // creates the custom views for the ListView's items
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         // get weather object for this specified ListView position
-        Weather day = getItem(position);
+        final Weather day = getItem(position);
 
         ViewHolder viewHolder; // object that reference's list item's views
 
@@ -60,6 +56,8 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
                     (ImageView) convertView.findViewById(R.id.conditionImageView);
             viewHolder.dayTextView =
                     (TextView) convertView.findViewById(R.id.dayTextView);
+            viewHolder.listOptionButton =
+                    (Button) convertView.findViewById(R.id.listOptionButton);
             viewHolder.lowTextView =
                     (TextView) convertView.findViewById(R.id.lowTextView);
             viewHolder.hiTextView =
@@ -68,26 +66,36 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
                     (TextView) convertView.findViewById(R.id.humidityTextView);
             convertView.setTag(viewHolder);
 
-        }
-        else { // reuse existing ViewHolder stored as the list item's tag
+        } else { // reuse existing ViewHolder stored as the list item's tag
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         // if weather condition icon already downloaded, use it;
         // otherwise, download icon in a separate thread
         // download and display weather condition image
+        assert day != null;
         if (bitmaps.containsKey(day.iconURL)) {
             viewHolder.conditionImageView.setImageBitmap(
                     bitmaps.get(day.iconURL)
             );
-        }
-        else new LoadImageTask(viewHolder.conditionImageView).execute(
+        } else new LoadImageTask(viewHolder.conditionImageView).execute(
                 day.iconURL);
 
         // get other data from Weather object and place into views
-        Context context = getContext(); // for loading String resources
+        final Context context = getContext(); // for loading String resources
         viewHolder.dayTextView.setText(context.getString(
                 R.string.day_description, day.nameOfPlace, day.description));
+
+
+        viewHolder.listOptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + day.lat + "," + day.lng);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                context.startActivity(mapIntent);
+            }
+        });
         viewHolder.lowTextView.setText(
                 context.getString(R.string.low_temp, day.lat));
         viewHolder.hiTextView.setText(
@@ -98,9 +106,19 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
         return convertView; // return completed list item to display
     }
 
+    // class fpr reusing views as list items scroll off and onto the screen
+    private static class ViewHolder {
+        ImageView conditionImageView;
+        TextView dayTextView;
+        TextView lowTextView;
+        TextView hiTextView;
+        TextView humidityTextView;
+        Button listOptionButton;
+    }
+
     // AsyncTask to load weather condition icons in a separate thread
     private class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
-        private ImageView imageView; // displays the thumbnail
+        private final ImageView imageView; // displays the thumbnail
 
         // store ImageView on which to set the download Bitmap
         public LoadImageTask(ImageView imageView) {
@@ -123,19 +141,17 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
                 try (InputStream inputStream = connection.getInputStream()) {
                     bitmap = BitmapFactory.decodeStream(inputStream);
                     bitmaps.put(params[0], bitmap); // cache for later use
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }
-            finally {
+            } finally {
+                assert connection != null;
                 connection.disconnect(); // close the HttpURLConnection
             }
 
             return bitmap;
         }
     }
- }
+}
