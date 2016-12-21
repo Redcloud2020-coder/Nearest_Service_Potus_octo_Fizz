@@ -16,6 +16,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="place_detail_name" />
     <string name="largetext">LargeText</string>
-    <string name="menuitem_navigate">Navigate</string>
-    <string name="menuitem_view">View</string>
+    <string name="menuItem_navigate">Navigate</string>
+    <string name="menuItem_view">View</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="bank">Bank</string>
+    <string name="school">School</string>
+    <string name="hospital">Hospital</string>
 </resources>

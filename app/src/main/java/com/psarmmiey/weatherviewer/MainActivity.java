@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // getActionBar().setDisplayHomeAsUpEnabled(true);
         // Create an instance of GoogleAPIClient.
 
         if (mGoogleApiClient == null) {
@@ -113,9 +114,6 @@ public class MainActivity extends AppCompatActivity
                         (EditText) findViewById(R.id.locationEditText);
                 if (keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
                     URL url = createURL(locationEditText.getText().toString());
-
-                    // hide keyboard and initiate a GetWeatherTask to download
-                    // weather data from OpenWeatherMap.org in a separate thread
                     if (url != null) {
                         dismissKeyboard(locationEditText);
                         GetWeatherTask getLocalWeatherTask = new GetWeatherTask();
@@ -140,6 +138,35 @@ public class MainActivity extends AppCompatActivity
                 quickCard.removeView(quickCard);
                 EditText locationEditText =
                         (EditText) findViewById(R.id.locationEditText);
+                URL url = createURL(locationEditText.getText().toString());
+
+                // hide keyboard and initiate a GetWeatherTask to download
+                // weather data from OpenWeatherMap.org in a separate thread
+                if (url != null) {
+                    dismissKeyboard(locationEditText);
+
+                    loadingSpin.setVisibility(View.VISIBLE);
+
+                    GetWeatherTask getLocalWeatherTask = new GetWeatherTask();
+                    getLocalWeatherTask.execute(url);
+                } else {
+                    Snackbar.make(findViewById(R.id.coordinatorLayout),
+                            R.string.invalid_url, Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        FloatingActionButton restaurantFab = (FloatingActionButton) findViewById(R.id.restaurantFab);
+        restaurantFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // get text from locationEditText and create web service URL
+                CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+                quickCard.setVisibility(View.GONE);
+                quickCard.removeView(quickCard);
+                EditText locationEditText =
+                        (EditText) findViewById(R.id.locationEditText);
+                locationEditText.setText(R.string.restaurant);
                 URL url = createURL(locationEditText.getText().toString());
 
                 // hide keyboard and initiate a GetWeatherTask to download

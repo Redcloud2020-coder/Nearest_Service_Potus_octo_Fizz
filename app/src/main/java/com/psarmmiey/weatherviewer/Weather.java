@@ -15,12 +15,12 @@ import java.util.TimeZone;
 
 class Weather {
 
+    public final double lat;
+    public final double lng;
+    public final double humidity;
+    public final String iconURL;
     public  String nameOfPlace = "";
-    public  double lat;
-    public  double lng;
-    public  double humidity;
     public  String description = "";
-    public String iconURL;
     // constructor
     public Weather(String name, double lat, double lng,
                    double humidity, String description, String iconName) {

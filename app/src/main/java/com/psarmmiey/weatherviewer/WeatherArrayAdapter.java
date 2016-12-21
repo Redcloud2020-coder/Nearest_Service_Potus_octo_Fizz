@@ -1,11 +1,14 @@
 package com.psarmmiey.weatherviewer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -95,11 +98,37 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
                         PopupMenu popup = new PopupMenu(context, view);
                         popup.getMenuInflater().inflate(R.menu.popup_list_option, popup.getMenu());
                         popup.show();
-                }
-				/*Uri gmmIntentUri = Uri.parse("google.navigation:q=" + day.lat + "," + day.lng);
-				Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-				mapIntent.setPackage("com.google.android.apps.maps");
-				context.startActivity(mapIntent);*/
+
+						popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+							@Override
+							public boolean onMenuItemClick(MenuItem menuItem) {
+								switch (menuItem.getItemId()) {
+									case R.id.navigate:
+										Uri gmmIntentUri = Uri.parse("google.navigation:q=" + day.lat + "," + day.lng);
+										Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+										mapIntent.setPackage("com.google.android.apps.maps");
+										context.startActivity(mapIntent);
+
+										break;
+									case R.id.view:
+										//MainActivity.setContentView(R.layout.activity_main);
+										//DetailActivity DA = new DetailActivity();
+										//  MainActivity..setContentView(R.layout.activity_detail);
+
+									default:
+										break;
+								}
+
+								return true;
+							}
+						});
+
+						break;
+
+					default:
+						break;
+				}
+				/**/
 			}
 		});
 		viewHolder.lowTextView.setText(
