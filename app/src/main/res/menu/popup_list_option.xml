@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="view"
+    <item android:id="@+id/view"
+        android:icon="@drawable/ic_map_black_24dp"
         android:title="@string/menuitem_view" />
 
-    <item android:id="navigate"
+    <item android:id="@+id/navigate"
+        android:icon="@drawable/ic_directions_bus_black_24dp"
         android:title="@string/menuitem_navigate" />
 </menu>

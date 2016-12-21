@@ -1,10 +1,8 @@
 package com.psarmmiey.weatherviewer;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -13,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -90,10 +89,17 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 		viewHolder.listOptionButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Uri gmmIntentUri = Uri.parse("google.navigation:q=" + day.lat + "," + day.lng);
+
+				switch (view.getId()) {
+                    case R.id.listOptionButton:
+                        PopupMenu popup = new PopupMenu(context, view);
+                        popup.getMenuInflater().inflate(R.menu.popup_list_option, popup.getMenu());
+                        popup.show();
+                }
+				/*Uri gmmIntentUri = Uri.parse("google.navigation:q=" + day.lat + "," + day.lng);
 				Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 				mapIntent.setPackage("com.google.android.apps.maps");
-				context.startActivity(mapIntent);
+				context.startActivity(mapIntent);*/
 			}
 		});
 		viewHolder.lowTextView.setText(
