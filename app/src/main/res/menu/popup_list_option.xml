@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="view"
+        android:title="@string/menuitem_view" />
+
+    <item android:id="navigate"
+        android:title="@string/menuitem_navigate" />
+</menu>

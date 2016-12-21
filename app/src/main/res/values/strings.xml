@@ -16,4 +16,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="place_detail_name" />
     <string name="largetext">LargeText</string>
+    <string name="menuitem_navigate">Navigate</string>
+    <string name="menuitem_view">View</string>
 </resources>
