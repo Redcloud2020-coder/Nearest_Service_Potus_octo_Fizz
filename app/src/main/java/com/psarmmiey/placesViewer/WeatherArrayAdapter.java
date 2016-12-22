@@ -1,4 +1,4 @@
-package com.psarmmiey.weatherviewer;
+package com.psarmmiey.placesViewer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -31,7 +32,7 @@ import java.util.Map;
 class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 	// stores already downloaded Bitmaps for reuse
 	private final Map<String, Bitmap> bitmaps = new HashMap<>();
-
+    View popUpView;
 
 	// constructor to initialize inherited member
 	public WeatherArrayAdapter(Context context, List<Weather> forecast) {
@@ -68,6 +69,7 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 					(TextView) convertView.findViewById(R.id.humidityTextView);
 			convertView.setTag(viewHolder);
 
+
 		} else { // reuse existing ViewHolder stored as the list item's tag
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
@@ -88,10 +90,10 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 		viewHolder.dayTextView.setText(context.getString(
 				R.string.day_description, day.nameOfPlace, day.description));
 
-
 		viewHolder.listOptionButton.setOnClickListener(new View.OnClickListener() {
+
 			@Override
-			public void onClick(View view) {
+            public void onClick(final View view) {
 
 				switch (view.getId()) {
                     case R.id.listOptionButton:
@@ -111,9 +113,11 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 
 										break;
 									case R.id.view:
-										//MainActivity.setContentView(R.layout.activity_main);
-										//DetailActivity DA = new DetailActivity();
-										//  MainActivity..setContentView(R.layout.activity_detail);
+
+                                        // context.startActivity(Intent.makeMainActivity(R.layout.activity_detail_view));
+                                        Intent in = new Intent(context, DetailView.class);
+                                        context.startActivity(in);
+                                        //  ((MainActivity) context).setContentView(R.layout.content_detail_view);
 
 									default:
 										break;
@@ -149,7 +153,9 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 		TextView hiTextView;
 		TextView humidityTextView;
 		Button listOptionButton;
-	}
+        View detailsView;
+        RatingBar placeRating;
+    }
 
 	// AsyncTask to load weather condition icons in a separate thread
 	private class LoadImageTask extends AsyncTask<String, Void, Bitmap> {

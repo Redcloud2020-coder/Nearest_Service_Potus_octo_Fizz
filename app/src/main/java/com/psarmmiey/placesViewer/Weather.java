@@ -1,7 +1,7 @@
 // Weather.java
 // Maintains one day's weather information
 
-package com.psarmmiey.weatherviewer;
+package com.psarmmiey.placesViewer;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;

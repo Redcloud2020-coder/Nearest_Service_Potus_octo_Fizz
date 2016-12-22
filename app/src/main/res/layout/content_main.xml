@@ -13,7 +13,7 @@
     app:layout_column="0"
     app:layout_columnSpan="4"
     app:layout_row="0"
-    tools:context="com.psarmmiey.weatherviewer.MainActivity"
+    tools:context="com.psarmmiey.placesViewer.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <android.support.design.widget.TextInputLayout
@@ -51,7 +51,7 @@
                         android:background="@color/colorQuick"
                         android:clickable="true"
                         android:padding="10dp"
-                        android:paddingLeft="5dp"
+                        android:paddingStart="10dp"
                         app:elevation="0dp"
                         app:fabSize="normal"
                         app:layout_column="0"
