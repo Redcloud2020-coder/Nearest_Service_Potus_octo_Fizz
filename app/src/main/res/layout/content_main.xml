@@ -51,6 +51,7 @@
                         android:background="@color/colorQuick"
                         android:clickable="true"
                         android:padding="10dp"
+                        android:paddingLeft="5dp"
                         app:elevation="0dp"
                         app:fabSize="normal"
                         app:layout_column="0"

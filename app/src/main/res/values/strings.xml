@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Close By</string>
     <string name="api_key">AIzaSyA7f3V7984G9n8LggAe5xL2wuCq0874sbs</string>
-    <string name="web_service_url">https://maps.googleapis.com/maps/api/place/nearbysearch/json?</string>
+    <string name="web_service_url">https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=</string>
     <string name="invalid_url">Invalid URL</string>
     <string name="place_description_image">A graphical representation of the service rendered by a particular place</string>
     <string name="high_temp">Long: %.4f</string>
