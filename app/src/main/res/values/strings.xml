@@ -27,4 +27,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_detail_view">DetailView</string>
+    <string name="rating">Rating</string>
+    <string name="address">Address: %1$s</string>
+    <string name="phoneNum">Phone Number: %1$s</string>
+    <string name="web">url: %1$s</string>
+    <string name="detail_base_url">https://maps.googleapis.com/maps/api/place/details/json?placeId=</string>
 </resources>

@@ -413,7 +413,8 @@ public class MainActivity extends AppCompatActivity
                         getFinalLong(),// maximum temperature
                         calcDistance(getmLat(), getmLong(), location.getDouble("lat"), location.getDouble("lng")), // Distance
                         place.getString("vicinity"), // place description
-                        place.getString("icon"))); // icon name
+                        place.getString("icon"), // icon name
+                        place.getString("place_id")));
 
 
                 weatherListView.setOnItemClickListener(
@@ -473,11 +474,15 @@ public class MainActivity extends AppCompatActivity
             boolean wifiConnected = activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
             boolean mobileConnected = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
             if (wifiConnected) {
-                Snackbar.make(findViewById(R.id.coordinatorLayout),
-                        "Internet Access Granted(Wi-fi)", Snackbar.LENGTH_LONG).show();
+                /*
+                  Snackbar.make(findViewById(R.id.coordinatorLayout),
+                  "Internet Access Granted(Wi-fi)", Snackbar.LENGTH_LONG).show();
+                  */
             } else if (mobileConnected) {
-                Snackbar.make(findViewById(R.id.coordinatorLayout),
-                        "Mobile Data Connected", Snackbar.LENGTH_LONG).show();
+               /*
+                 Snackbar.make(findViewById(R.id.coordinatorLayout),
+                 "Mobile Data Connected", Snackbar.LENGTH_LONG).show();
+                 */
             }
         } else {
             Snackbar.make(findViewById(R.id.coordinatorLayout),
@@ -540,4 +545,3 @@ public class MainActivity extends AppCompatActivity
 
 
 }
-

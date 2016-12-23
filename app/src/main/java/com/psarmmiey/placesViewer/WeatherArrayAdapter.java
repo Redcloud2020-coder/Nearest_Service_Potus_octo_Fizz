@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,10 +33,10 @@ import java.util.Map;
 class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 	// stores already downloaded Bitmaps for reuse
 	private final Map<String, Bitmap> bitmaps = new HashMap<>();
-    View popUpView;
+	//View popUpView;
 
 	// constructor to initialize inherited member
-	public WeatherArrayAdapter(Context context, List<Weather> forecast) {
+	WeatherArrayAdapter(Context context, List<Weather> forecast) {
 		super(context, -1, forecast);
 	}
 
@@ -46,7 +47,7 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 		// get weather object for this specified ListView position
 		final Weather day = getItem(position);
 
-		ViewHolder viewHolder; // object that reference's list item's views
+		final ViewHolder viewHolder; // object that reference's list item's views
 
 		// check for reusable ViewHolder from a ListView item that scrolled
 		// offscreen; otherwise, create a new ViewHolder
@@ -67,6 +68,9 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 					(TextView) convertView.findViewById(R.id.hiTextView);
 			viewHolder.humidityTextView =
 					(TextView) convertView.findViewById(R.id.humidityTextView);
+			viewHolder.detailsCard =
+					(CardView) convertView.findViewById(R.id.detailCard);
+
 			convertView.setTag(viewHolder);
 
 
@@ -89,6 +93,7 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 		final Context context = getContext(); // for loading String resources
 		viewHolder.dayTextView.setText(context.getString(
 				R.string.day_description, day.nameOfPlace, day.description));
+		viewHolder.detailsCard.setVisibility(View.GONE);
 
 		viewHolder.listOptionButton.setOnClickListener(new View.OnClickListener() {
 
@@ -113,11 +118,13 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 
 										break;
 									case R.id.view:
+										//viewHolder.conditionImageView.setVisibility(View.GONE);
+										viewHolder.detailsCard.setVisibility(View.VISIBLE);
+										// context.startActivity(Intent.makeMainActivity(R.layout.activity_detail_view));
+										//Intent in = new Intent(context, DetailView.class);
 
-                                        // context.startActivity(Intent.makeMainActivity(R.layout.activity_detail_view));
-                                        Intent in = new Intent(context, DetailView.class);
-                                        context.startActivity(in);
-                                        //  ((MainActivity) context).setContentView(R.layout.content_detail_view);
+										// context.startActivity(in);
+										//  ((MainActivity) context).setContentView(R.layout.content_detail_view);
 
 									default:
 										break;
@@ -155,7 +162,8 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 		Button listOptionButton;
         View detailsView;
         RatingBar placeRating;
-    }
+		CardView detailsCard;
+	}
 
 	// AsyncTask to load weather condition icons in a separate thread
 	private class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
