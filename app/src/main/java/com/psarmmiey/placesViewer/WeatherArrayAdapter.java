@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
@@ -56,6 +57,8 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 			LayoutInflater inflater = LayoutInflater.from(getContext());
 			convertView =
 					inflater.inflate(R.layout.list_item, parent, false);
+			viewHolder.initialCard =
+					(CardView) convertView.findViewById(R.id.initialCard);
 			viewHolder.conditionImageView =
 					(ImageView) convertView.findViewById(R.id.conditionImageView);
 			viewHolder.dayTextView =
@@ -68,6 +71,8 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 					(TextView) convertView.findViewById(R.id.hiTextView);
 			viewHolder.humidityTextView =
 					(TextView) convertView.findViewById(R.id.humidityTextView);
+			viewHolder.subGrid =
+					(GridLayout) convertView.findViewById(R.id.subGrid);
 			viewHolder.detailsCard =
 					(CardView) convertView.findViewById(R.id.detailCard);
 
@@ -77,6 +82,7 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 		} else { // reuse existing ViewHolder stored as the list item's tag
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
+
 
 		// if weather condition icon already downloaded, use it;
 		// otherwise, download icon in a separate thread
@@ -118,7 +124,8 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 
 										break;
 									case R.id.view:
-										//viewHolder.conditionImageView.setVisibility(View.GONE);
+										// viewHolder.conditionImageView.setVisibility(View.GONE);
+										// viewHolder.subGrid.setVisibility(View.VISIBLE);
 										viewHolder.detailsCard.setVisibility(View.VISIBLE);
 										// context.startActivity(Intent.makeMainActivity(R.layout.activity_detail_view));
 										//Intent in = new Intent(context, DetailView.class);
@@ -163,6 +170,8 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
         View detailsView;
         RatingBar placeRating;
 		CardView detailsCard;
+		CardView initialCard;
+		GridLayout subGrid;
 	}
 
 	// AsyncTask to load weather condition icons in a separate thread

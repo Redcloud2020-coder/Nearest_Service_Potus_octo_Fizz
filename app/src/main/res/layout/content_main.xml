@@ -140,17 +140,29 @@
 
         <ListView
             android:id="@+id/weatherListView"
+            style="@style/Widget.AppCompat.ListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:animateLayoutChanges="false"
             android:clickable="true"
             android:contextClickable="true"
+            android:divider="?android:attr/listDivider"
+            android:elevation="10dp"
             android:fadeScrollbars="true"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
             android:isScrollContainer="true"
-            android:longClickable="false"
+
+
             android:pointerIcon="none"
-            android:smoothScrollbar="true" />
+            android:saveEnabled="false"
+
+            android:scrollbarSize="2dp"
+            android:scrollbarStyle="insideInset"
+            android:smoothScrollbar="true"
+            android:splitMotionEvents="false"
+            android:stackFromBottom="false"
+            android:verticalScrollbarPosition="defaultPosition" />
 
         <EditText
             android:id="@+id/locationEditText"
