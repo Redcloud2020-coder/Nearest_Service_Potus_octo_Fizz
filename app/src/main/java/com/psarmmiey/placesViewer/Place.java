@@ -13,14 +13,13 @@ class Place {
     private static String iconLink;
     private static String phoneNumber;
 
-    public Place(String name, String address, String website, String rating, String iconLink, String
-            phoneNumber) {
-        setName(name);
-        setAddress(address);
+    public Place(String website) {
+        /*setName(name);
+        setAddress(address);*/
         setWebsite(website);
-        setRating(Integer.parseInt(rating));
+        /*setRating(Integer.parseInt(rating));
         setIconLink(iconLink);
-        setPhoneNumber(phoneNumber);
+        setPhoneNumber(phoneNumber);*/
 
     }
 

@@ -15,11 +15,11 @@ import java.util.TimeZone;
 
 public class Weather {
 
-    private static String placeID;
     public final double lat;
     public final double lng;
     public final double humidity;
     public final String iconURL;
+    public String placeID;
     public  String nameOfPlace = "";
     public  String description = "";
 
@@ -41,9 +41,6 @@ public class Weather {
 
     }
 
-    public static String getPlaceID() {
-        return placeID;
-    }
 
 // --Commented out by Inspection START (12/20/16 2:07 PM):
 //    public Weather(String name, double lat, double aLong, double distance, String icon) {

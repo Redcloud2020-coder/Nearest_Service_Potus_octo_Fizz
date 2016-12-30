@@ -17,7 +17,7 @@
     <string name="place_detail_name" />
     <string name="largetext">LargeText</string>
     <string name="menuItem_navigate">Navigate</string>
-    <string name="menuItem_view">View</string>
+    <string name="menuItem_view">More</string>
     <string name="restaurant">Restaurant</string>
     <string name="bank">Bank</string>
     <string name="school">School</string>
@@ -33,4 +33,19 @@
     <string name="web">url: %1$s</string>
     <string name="detail_base_url">https://maps.googleapis.com/maps/api/place/details/json?placeId=</string>
     <string name="textview">TextView</string>
+    <string name="connection_error">No Internet Access</string>
+    <string name="mobile_data_connected">Mobile Data Connected</string>
+    <string name="wifi_connected">Internet Access Granted</string>
+    <string name="vicinity_json">vicinity</string>
+    <string name="icon_json">icon</string>
+    <string name="place_id_json">place_id</string>
+    <string name="name_json">name</string>
+    <string name="lat_json">lat</string>
+    <string name="lng_json">lng</string>
+    <string name="geometry_json">geometry</string>
+    <string name="location_json">location</string>
+    <string name="results_json">results</string>
+    <string name="status_json">status</string>
+    <string name="base">https://maps.googleapis.com/maps/api/place/details/json?placeid=</string>
+    <string name="key2"><![CDATA[&key=AIzaSyA7f3V7984G9n8LggAe5xL2wuCq0874sbs]]></string>
 </resources>

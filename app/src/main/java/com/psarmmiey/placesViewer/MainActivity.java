@@ -2,12 +2,10 @@ package com.psarmmiey.placesViewer;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -353,19 +350,29 @@ public class MainActivity extends AppCompatActivity
     private URL createURL(String places) {
         String apiKey = getString(R.string.api_key);
         String baseUrl = getString(R.string.web_service_url);
-        double lat = 1.0;
         String order = "&rankby=distance&";
-        //  String location = "-33.8670522,151.1957362&";
-
-
         try {
-            // create URL for specified city and imperial units (Fahrenheit)
-            System.out.print(getmLat());
             String urlString;
             urlString =
-                    baseUrl + getmLat() + "," + getmLong() + order +
-                            "&name=" + places + "&key=" + apiKey;
+                    String.format("%s%s,%s%s&name=%s&key=%s", baseUrl, getmLat(), getmLong(),
+                            order, places, apiKey);
 
+            return new URL(urlString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null; // URL was malformed
+    }
+
+    @Nullable
+    private URL createURL2(String placeID) {
+
+        double lat = 1.0;
+        String base = getString(R.string.base);
+        try {
+            String urlString;
+            urlString = String.format("%s%s%s", base, placeID, getString(R.string.key2));
             return new URL(urlString);
         } catch (Exception e) {
             e.printStackTrace();
@@ -376,60 +383,69 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
         Snackbar.make(findViewById(R.id.coordinatorLayout),
                 R.string.internet_error, Snackbar.LENGTH_LONG).show();
     }
 
     // create Weather objects from JSONObject containing the forecast
     private void convertJSONtoArrayList(JSONObject forecast) {
+
         weatherList.clear(); // clear old weather data
 
         try {
             // get forecast's "list" JSONArray
-            JSONArray list = forecast.getJSONArray("results");
-            if (forecast.getJSONArray("results") == null) {
+
+            if (forecast.getString(getString(R.string.status_json)).equals("ZERO_RESULTS")) {
                 Snackbar.make(findViewById(R.id.coordinatorLayout),
                         R.string.read_error, Snackbar.LENGTH_LONG).show();
-            }
-
-            for (int i = 0; i < list.length(); ++i) {
-
-                JSONObject place = list.getJSONObject(i); // get one day's data
-                JSONObject north = place.getJSONObject("geometry");
-                JSONObject location = north.getJSONObject("location");
-
-                // set destination latitude and longitude
-                setFinalLat(location.getDouble("lat"));
-                setFinalLong(location.getDouble("lng"));
-
                 ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
                 loadingSpin.setVisibility(View.GONE);
+                // Toast.makeText(this, R.string.read_error, Toast.LENGTH_LONG).show();
+            } else {
 
+                JSONArray list = forecast.getJSONArray(getString(R.string.results_json));
 
-                weatherList.add(new Weather(
-                        place.getString("name"), // name of place
-                        getFinalLat(), // distance between current location and destination
-                        getFinalLong(),// maximum temperature
-                        calcDistance(getmLat(), getmLong(), location.getDouble("lat"), location.getDouble("lng")), // Distance
-                        place.getString("vicinity"), // place description
-                        place.getString("icon"), // icon name
-                        place.getString("place_id")));
+                for (int i = 0; i < list.length(); ++i) {
 
+                    JSONObject place = list.getJSONObject(i); // get one day's data
+                    JSONObject north = place.getJSONObject(getString(R.string.geometry_json));
+                    JSONObject location = north.getJSONObject(getString(R.string.location_json));
 
-                weatherListView.setOnItemClickListener(
-                        new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Uri gmmIntentUri =
-                                        Uri.parse("google.navigation:q=" +
-                                                getFinalLat() + "," + getFinalLong());
-                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                mapIntent.setPackage("com.google.android.apps.maps");
-                                startActivity(mapIntent);
+                    // set destination latitude and longitude
+                    setFinalLat(location.getDouble(getString(R.string.lat_json)));
+                    setFinalLong(location.getDouble(getString(R.string.lng_json)));
+
+                    ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
+                    loadingSpin.setVisibility(View.GONE);
+
+                    weatherList.add(new Weather(
+                            place.getString(getString(R.string.name_json)), // name of place
+
+                            getFinalLat(), // distance between current location and destination
+                            getFinalLong(),// maximum temperature
+
+                            // Calculate the distance
+                            calcDistance(getmLat(), getmLong(),
+                                    location.getDouble(getString(R.string.lat_json)),
+                                    location.getDouble(getString(R.string.lng_json))),
+                            place.getString(getString(R.string.vicinity_json)), // place description
+                            place.getString(getString(R.string.icon_json)), // icon name
+                            place.getString(getString(R.string.place_id_json))));
+
+                   /* weatherListView.setOnItemClickListener(
+                            new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    Uri gmmIntentUri =
+                                            Uri.parse("google.navigation:q=" +
+                                                    getFinalLat() + "," + getFinalLong());
+                                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                    mapIntent.setPackage("com.google.android.apps.maps");
+                                    startActivity(mapIntent);
+                                }
                             }
-                        }
-                );
+                    );*/
+                }
             }
 
         } catch (JSONException e) {
@@ -467,27 +483,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void checkNetworkConnection() {
+
         ConnectivityManager connMgr =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
+
         if (activeInfo != null && activeInfo.isConnected()) {
             boolean wifiConnected = activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
             boolean mobileConnected = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
-            if (wifiConnected) {
-                /*
-                  Snackbar.make(findViewById(R.id.coordinatorLayout),
-                  "Internet Access Granted(Wi-fi)", Snackbar.LENGTH_LONG).show();
-                  */
-            } else if (mobileConnected) {
-               /*
-                 Snackbar.make(findViewById(R.id.coordinatorLayout),
-                 "Mobile Data Connected", Snackbar.LENGTH_LONG).show();
-                 */
-            }
-        } else {
-            Snackbar.make(findViewById(R.id.coordinatorLayout),
-                    "No Internet Access", Snackbar.LENGTH_LONG).show();
-        }
+
+            if (wifiConnected) Snackbar.make(findViewById(R.id.coordinatorLayout),
+                    R.string.wifi_connected, Snackbar.LENGTH_SHORT).show();
+            else if (mobileConnected) Snackbar.make(findViewById(R.id.coordinatorLayout),
+                    R.string.mobile_data_connected, Snackbar.LENGTH_SHORT).show();
+        } else Snackbar.make(findViewById(R.id.coordinatorLayout),
+                R.string.connection_error, Snackbar.LENGTH_LONG).show();
     }
 
     private class GetPlaceTask extends AsyncTask<URL, Void, JSONObject> {
@@ -534,8 +544,6 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(JSONObject weather) {
 
             convertJSONtoArrayList(weather); // repopulate weatherList
-            System.out.println(weather);
-
             weatherArrayAdapter.notifyDataSetChanged(); // rebind to ListView
             weatherListView.smoothScrollToPosition(0); // scroll to top
 
