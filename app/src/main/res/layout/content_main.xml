@@ -106,7 +106,6 @@
                         app:srcCompat="@drawable/hospital" />
 
                     <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/mallFab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="7dp"

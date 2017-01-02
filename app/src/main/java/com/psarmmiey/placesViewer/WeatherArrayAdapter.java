@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -31,7 +32,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +45,7 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 	// stores already downloaded Bitmaps for reuse
 	private final Map<String, Bitmap> bitmaps = new HashMap<>();
 	//View popUpView;
-	private final List<Place> placeList = new ArrayList<>();
+	//private final Map<String, TextView>placeDetail = new HashMap();
 
 	// constructor to initialize inherited member
 	WeatherArrayAdapter(Context context, List<Weather> forecast) {
@@ -186,44 +186,12 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 		viewHolder.humidityTextView.setText(
 				context.getString(R.string.humidity, day.humidity));
 		viewHolder.placeID.setText(day.placeID);
-		viewHolder.website.setText(place.getWebsite());
+		viewHolder.website.setText(Place.getWebsite());
 		return convertView; // return completed list item to display
 	}
 
-	private void convertJSONtoArrayList(JSONObject forecast) {
-		//weatherList.clear(); // clear old weather data
 
-		try {
-			// get forecast's "list" JSONArray
-			JSONArray list = forecast.getJSONArray("result");
-
-
-			for (int i = 0; i < list.length(); ++i) {
-
-				JSONObject place = list.getJSONObject(i); // get one day's data
-				//JSONObject north = place.getJSONObject("geometry");
-				//JSONObject location = north.getJSONObject("location");
-
-				// set destination latitude and longitude
-				//setFinalLat(location.getDouble("lat"));
-				//setFinalLong(location.getDouble("lng"));
-
-				//ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
-				//loadingSpin.setVisibility(View.GONE);
-
-
-				placeList.add(new Place(
-						place.getString("name")));
-
-
-			}
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-	}
-
+	@Nullable
 	private URL createURL(String placeID) {
 
 		double lat = 1.0;
@@ -261,7 +229,7 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 		private final ImageView imageView; // displays the thumbnail
 
 		// store ImageView on which to set the download Bitmap
-		public LoadImageTask(ImageView imageView) {
+		LoadImageTask(ImageView imageView) {
 			this.imageView = imageView;
 		}
 
@@ -296,6 +264,7 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 	}
 
 	private class GetPlaceDetail extends AsyncTask<URL, Void, JSONObject> {
+
 		@Override
 		protected JSONObject doInBackground(URL... params) {
 			HttpURLConnection connection = null;
@@ -343,11 +312,45 @@ class WeatherArrayAdapter extends ArrayAdapter<Weather> {
 		protected void onPostExecute(JSONObject weather) {
 
 			convertJSONtoArrayList(weather); // repopulate weatherList
-			System.out.println(weather);
+			// System.out.println(weather);
 
 			//weatherArrayAdapter.notifyDataSetChanged(); // rebind to ListView
 			//weatherListView.smoothScrollToPosition(0); // scroll to top
 
+
+		}
+
+		private void convertJSONtoArrayList(JSONObject forecast) {
+			//weatherList.clear(); // clear old weather data
+
+			try {
+				// get forecast's "list" JSONArray
+				JSONArray list = forecast.getJSONArray("result");
+
+
+				for(int i = 0; i < list.length(); ++ i) {
+
+					JSONObject place = list.getJSONObject(i); // get one day's data
+					//JSONObject north = place.getJSONObject("geometry");
+					//JSONObject location = north.getJSONObject("location");
+
+					// set destination latitude and longitude
+					//setFinalLat(location.getDouble("lat"));
+					//setFinalLong(location.getDouble("lng"));
+
+					//ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
+					//loadingSpin.setVisibility(View.GONE);
+
+
+				/*	placeList.add(new Place(
+							place.getString("name")));*/
+
+
+				}
+
+			} catch(JSONException e) {
+				e.printStackTrace();
+			}
 
 		}
 	}

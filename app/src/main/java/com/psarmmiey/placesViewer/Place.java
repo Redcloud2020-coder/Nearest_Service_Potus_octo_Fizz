@@ -13,7 +13,7 @@ class Place {
     private static String iconLink;
     private static String phoneNumber;
 
-    public Place(String website) {
+    Place(String website) {
         /*setName(name);
         setAddress(address);*/
         setWebsite(website);
@@ -31,17 +31,21 @@ class Place {
         return name;
     }
 
-    private static void setName(String name) {
-        Place.name = name;
-    }
+// --Commented out by Inspection START (12/30/16 4:34 PM):
+//    private static void setName(String name) {
+//        Place.name = name;
+//    }
+// --Commented out by Inspection STOP (12/30/16 4:34 PM)
 
     public static String getAddress() {
         return address;
     }
 
-    private static void setAddress(String address) {
-        Place.address = address;
-    }
+// --Commented out by Inspection START (12/30/16 4:35 PM):
+//    private static void setAddress(String address) {
+//        Place.address = address;
+//    }
+// --Commented out by Inspection STOP (12/30/16 4:35 PM)
 
     public static String getWebsite() {
         return website;
@@ -55,17 +59,21 @@ class Place {
         return rating;
     }
 
-    private static void setRating(float rating) {
-        Place.rating = rating;
-    }
+// --Commented out by Inspection START (12/30/16 4:35 PM):
+//    private static void setRating(float rating) {
+//        Place.rating = rating;
+//    }
+// --Commented out by Inspection STOP (12/30/16 4:35 PM)
 
     public static String getIconLink() {
         return iconLink;
     }
 
-    private static void setIconLink(String iconLink) {
-        Place.iconLink = iconLink;
-    }
+// --Commented out by Inspection START (12/30/16 4:35 PM):
+//    private static void setIconLink(String iconLink) {
+//        Place.iconLink = iconLink;
+//    }
+// --Commented out by Inspection STOP (12/30/16 4:35 PM)
 
     public static String getPhoneNumber() {
         return phoneNumber;
