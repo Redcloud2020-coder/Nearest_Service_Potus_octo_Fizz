@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
 			public boolean onKey(View view, int i, KeyEvent keyEvent) {
 				EditText locationEditText =
 					(EditText) findViewById(R.id.locationEditText);
-				if(keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
+				if(keyEvent.getAction() == android.view.KeyEvent.KEYCODE_ENTER) {
 					URL url = createURL(locationEditText.getText().toString());
 					if(url != null) {
 						dismissKeyboard(locationEditText);
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity
 
 				FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
-				fab.setVisibility(View.GONE);
+				// fab.setVisibility(View.GONE);
 				quickCard.setVisibility(View.GONE);
 				quickCard.removeView(quickCard);
 				EditText locationEditText =

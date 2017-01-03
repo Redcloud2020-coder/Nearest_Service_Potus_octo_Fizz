@@ -42,4 +42,17 @@
     <string name="status_json">status</string>
     <string name="base">https://maps.googleapis.com/maps/api/place/details/json?placeid=</string>
     <string name="key2"><![CDATA[&key=AIzaSyA7f3V7984G9n8LggAe5xL2wuCq0874sbs]]></string>
+    <string name="petrol_station">Petrol Stations</string>
+    <string name="atm">atm</string>
+    <string name="chemists">Chemists</string>
+    <string name="supermarket">Supermarkets</string>
+    <string name="hotels">Hotels</string>
+    <string name="department_stores">Department Stores</string>
+    <string name="post_office">Post Offices</string>
+    <string name="more">More</string>
+    <string name="less">Less</string>
+    <string name="parking">Parking</string>
+    <string name="pharmacy">Pharmacy</string>
+    <string name="church">Church</string>
+    <string name="mosque">Mosque</string>
 </resources>
