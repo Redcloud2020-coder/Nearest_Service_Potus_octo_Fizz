@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -40,6 +41,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.View.GONE;
 
 
 public class MainActivity extends AppCompatActivity
@@ -106,6 +109,7 @@ public class MainActivity extends AppCompatActivity
 					FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 					CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
 					fab.setVisibility(View.VISIBLE);
+
 					quickCard.setVisibility(View.VISIBLE);
 				}
 			}
@@ -131,6 +135,46 @@ public class MainActivity extends AppCompatActivity
 			}
 		});
 
+		FloatingActionButton churchFab = (FloatingActionButton) findViewById(R.id.church_fab);
+		FloatingActionButton mosque = (FloatingActionButton) findViewById(R.id.mosque_fab);
+		FloatingActionButton postOffice = (FloatingActionButton) findViewById(R.id.post_office_fab);
+		FloatingActionButton petrolStation = (FloatingActionButton) findViewById(R.id.petrol_station_fab);
+		FloatingActionButton supermarket = (FloatingActionButton) findViewById(R.id.supermarkets_fab);
+		FloatingActionButton hotel = (FloatingActionButton) findViewById(R.id.hotel_fab);
+		FloatingActionButton pharmacy = (FloatingActionButton) findViewById(R.id.pharmacy_fab);
+
+		//FloatingActionButton hospital = (FloatingActionButton) findViewById(R.id.hospitalFab);
+		TextView churchText = (TextView) findViewById(R.id.church_textView);
+		TextView mosqueText = (TextView) findViewById(R.id.mosque_textView);
+		TextView postOfficeText = (TextView) findViewById(R.id.post_office_textView);
+		TextView petrolStationText = (TextView) findViewById(R.id.petrol_stations_textView);
+		TextView supermarketText = (TextView) findViewById(R.id.supermarket_textView);
+		TextView hotelText = (TextView) findViewById(R.id.hotel_textView);
+		TextView pharmacyText = (TextView) findViewById(R.id.chemst_textView);
+		TextView moreLess = (TextView) findViewById(R.id.more_Less_textView);
+
+
+		pharmacy.setVisibility(View.GONE);
+		pharmacyText.setVisibility(GONE);
+		churchFab.setVisibility(View.GONE);
+		churchText.setVisibility(View.GONE);
+		supermarket.setVisibility(View.GONE);
+		supermarketText.setVisibility(View.GONE);
+		hotel.setVisibility(View.GONE);
+		hotelText.setVisibility(View.GONE);
+		petrolStation.setVisibility(View.GONE);
+		petrolStationText.setVisibility(View.GONE);
+		mosque.setVisibility(View.GONE);
+		mosqueText.setVisibility(View.GONE);
+		postOffice.setVisibility(View.GONE);
+		postOfficeText.setVisibility(View.GONE);
+		moreLess.setVisibility(View.GONE);
+
+		// CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+		FloatingActionButton lessFab = (FloatingActionButton) findViewById(R.id.more_less_fab);
+		lessFab.setVisibility(GONE);
+
+
 		// Search Fab
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {
@@ -138,10 +182,10 @@ public class MainActivity extends AppCompatActivity
 			public void onClick(View view) {
 				// get text from locationEditText and create web service URL
 
-				FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+				//	FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
 				// fab.setVisibility(View.GONE);
-				quickCard.setVisibility(View.GONE);
+				quickCard.setVisibility(GONE);
 				quickCard.removeView(quickCard);
 				EditText locationEditText =
 					(EditText) findViewById(R.id.locationEditText);
@@ -173,7 +217,7 @@ public class MainActivity extends AppCompatActivity
 			public void onClick(View view) {
 				// get text from locationEditText and create web service URL
 				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
-				quickCard.setVisibility(View.GONE);
+				quickCard.setVisibility(GONE);
 				quickCard.removeView(quickCard);
 				EditText locationEditText =
 					(EditText) findViewById(R.id.locationEditText);
@@ -204,7 +248,7 @@ public class MainActivity extends AppCompatActivity
 			public void onClick(View view) {
 				// get text from locationEditText and create web service URL
 				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
-				quickCard.setVisibility(View.GONE);
+				quickCard.setVisibility(GONE);
 				quickCard.removeView(quickCard);
 				EditText locationEditText =
 					(EditText) findViewById(R.id.locationEditText);
@@ -228,13 +272,13 @@ public class MainActivity extends AppCompatActivity
 		});
 
 		// hospital Fab
-		FloatingActionButton hospitalFab = (FloatingActionButton) findViewById(R.id.hospitalFab);
+		final FloatingActionButton hospitalFab = (FloatingActionButton) findViewById(R.id.hospitalFab);
 		hospitalFab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				// get text from locationEditText and create web service URL
 				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
-				quickCard.setVisibility(View.GONE);
+				quickCard.setVisibility(GONE);
 				quickCard.removeView(quickCard);
 				EditText locationEditText =
 					(EditText) findViewById(R.id.locationEditText);
@@ -264,7 +308,7 @@ public class MainActivity extends AppCompatActivity
 			public void onClick(View view) {
 				// get text from locationEditText and create web service URL
 				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
-				quickCard.setVisibility(View.GONE);
+				quickCard.setVisibility(GONE);
 				quickCard.removeView(quickCard);
 				EditText locationEditText =
 					(EditText) findViewById(R.id.locationEditText);
@@ -282,6 +326,303 @@ public class MainActivity extends AppCompatActivity
 					Snackbar.make(findViewById(R.id.coordinatorLayout),
 						R.string.invalid_url, Snackbar.LENGTH_LONG).show();
 				}
+			}
+		});
+
+		churchFab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// get text from locationEditText and create web service URL
+				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+				quickCard.setVisibility(GONE);
+				quickCard.removeView(quickCard);
+				EditText locationEditText =
+					(EditText) findViewById(R.id.locationEditText);
+				locationEditText.setText(R.string.church);
+				URL url = createURL(locationEditText.getText().toString());
+
+				// hide keyboard and initiate a GetPlaceTask to download
+				// weather data from OpenWeatherMap.org in a separate thread
+				if(url != null) {
+					dismissKeyboard(locationEditText);
+					loadingSpin.setVisibility(View.VISIBLE);
+					GetPlaceTask getLocalWeatherTask = new GetPlaceTask();
+					getLocalWeatherTask.execute(url);
+				} else {
+					Snackbar.make(findViewById(R.id.coordinatorLayout),
+						R.string.invalid_url, Snackbar.LENGTH_LONG).show();
+				}
+			}
+		});
+
+		mosque.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// get text from locationEditText and create web service URL
+				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+				quickCard.setVisibility(GONE);
+				quickCard.removeView(quickCard);
+				EditText locationEditText =
+					(EditText) findViewById(R.id.locationEditText);
+				locationEditText.setText(R.string.mosque);
+				URL url = createURL(locationEditText.getText().toString());
+
+				// hide keyboard and initiate a GetPlaceTask to download
+				// weather data from OpenWeatherMap.org in a separate thread
+				if(url != null) {
+					dismissKeyboard(locationEditText);
+					loadingSpin.setVisibility(View.VISIBLE);
+					GetPlaceTask getLocalWeatherTask = new GetPlaceTask();
+					getLocalWeatherTask.execute(url);
+				} else {
+					Snackbar.make(findViewById(R.id.coordinatorLayout),
+						R.string.invalid_url, Snackbar.LENGTH_LONG).show();
+				}
+			}
+		});
+
+		postOffice.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// get text from locationEditText and create web service URL
+				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+				quickCard.setVisibility(GONE);
+				quickCard.removeView(quickCard);
+				EditText locationEditText =
+					(EditText) findViewById(R.id.locationEditText);
+				locationEditText.setText(R.string.post_office);
+				URL url = createURL(locationEditText.getText().toString());
+
+				// hide keyboard and initiate a GetPlaceTask to download
+				// weather data from OpenWeatherMap.org in a separate thread
+				if(url != null) {
+					dismissKeyboard(locationEditText);
+					loadingSpin.setVisibility(View.VISIBLE);
+					GetPlaceTask getLocalWeatherTask = new GetPlaceTask();
+					getLocalWeatherTask.execute(url);
+				} else {
+					Snackbar.make(findViewById(R.id.coordinatorLayout),
+						R.string.invalid_url, Snackbar.LENGTH_LONG).show();
+				}
+			}
+		});
+
+		petrolStation.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// get text from locationEditText and create web service URL
+				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+				quickCard.setVisibility(GONE);
+				quickCard.removeView(quickCard);
+				EditText locationEditText =
+					(EditText) findViewById(R.id.locationEditText);
+				locationEditText.setText(R.string.petrol_station);
+				URL url = createURL(locationEditText.getText().toString());
+
+				// hide keyboard and initiate a GetPlaceTask to download
+				// weather data from OpenWeatherMap.org in a separate thread
+				if(url != null) {
+					dismissKeyboard(locationEditText);
+					loadingSpin.setVisibility(View.VISIBLE);
+					GetPlaceTask getLocalWeatherTask = new GetPlaceTask();
+					getLocalWeatherTask.execute(url);
+				} else {
+					Snackbar.make(findViewById(R.id.coordinatorLayout),
+						R.string.invalid_url, Snackbar.LENGTH_LONG).show();
+				}
+			}
+		});
+		supermarket.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// get text from locationEditText and create web service URL
+				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+				quickCard.setVisibility(GONE);
+				quickCard.removeView(quickCard);
+				EditText locationEditText =
+					(EditText) findViewById(R.id.locationEditText);
+				locationEditText.setText(R.string.supermarket);
+				URL url = createURL(locationEditText.getText().toString());
+
+				// hide keyboard and initiate a GetPlaceTask to download
+				// weather data from OpenWeatherMap.org in a separate thread
+				if(url != null) {
+					dismissKeyboard(locationEditText);
+					loadingSpin.setVisibility(View.VISIBLE);
+					GetPlaceTask getLocalWeatherTask = new GetPlaceTask();
+					getLocalWeatherTask.execute(url);
+				} else {
+					Snackbar.make(findViewById(R.id.coordinatorLayout),
+						R.string.invalid_url, Snackbar.LENGTH_LONG).show();
+				}
+			}
+		});
+
+		hotel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// get text from locationEditText and create web service URL
+				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+				quickCard.setVisibility(GONE);
+				quickCard.removeView(quickCard);
+				EditText locationEditText =
+					(EditText) findViewById(R.id.locationEditText);
+				locationEditText.setText(R.string.hotels);
+				URL url = createURL(locationEditText.getText().toString());
+
+				// hide keyboard and initiate a GetPlaceTask to download
+				// weather data from OpenWeatherMap.org in a separate thread
+				if(url != null) {
+					dismissKeyboard(locationEditText);
+					loadingSpin.setVisibility(View.VISIBLE);
+					GetPlaceTask getLocalWeatherTask = new GetPlaceTask();
+					getLocalWeatherTask.execute(url);
+				} else {
+					Snackbar.make(findViewById(R.id.coordinatorLayout),
+						R.string.invalid_url, Snackbar.LENGTH_LONG).show();
+				}
+			}
+		});
+
+		pharmacy.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// get text from locationEditText and create web service URL
+				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+				quickCard.setVisibility(GONE);
+				quickCard.removeView(quickCard);
+				EditText locationEditText =
+					(EditText) findViewById(R.id.locationEditText);
+				locationEditText.setText(R.string.pharmacy);
+				URL url = createURL(locationEditText.getText().toString());
+
+				// hide keyboard and initiate a GetPlaceTask to download
+				// weather data from OpenWeatherMap.org in a separate thread
+				if(url != null) {
+					dismissKeyboard(locationEditText);
+					loadingSpin.setVisibility(View.VISIBLE);
+					GetPlaceTask getLocalWeatherTask = new GetPlaceTask();
+					getLocalWeatherTask.execute(url);
+				} else {
+					Snackbar.make(findViewById(R.id.coordinatorLayout),
+						R.string.invalid_url, Snackbar.LENGTH_LONG).show();
+				}
+			}
+		});
+
+
+		FloatingActionButton less_Fab = (FloatingActionButton) findViewById(R.id.less_fab);
+		less_Fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				FloatingActionButton churchFab = (FloatingActionButton) findViewById(R.id.church_fab);
+				FloatingActionButton mosque = (FloatingActionButton) findViewById(R.id.mosque_fab);
+				FloatingActionButton postOffice = (FloatingActionButton) findViewById(R.id.post_office_fab);
+				FloatingActionButton petrolStation = (FloatingActionButton) findViewById(R.id.petrol_station_fab);
+				FloatingActionButton supermarket = (FloatingActionButton) findViewById(R.id.supermarkets_fab);
+				FloatingActionButton hotel = (FloatingActionButton) findViewById(R.id.hotel_fab);
+				FloatingActionButton pharmacy = (FloatingActionButton) findViewById(R.id.pharmacy_fab);
+				FloatingActionButton hospitalFab = (FloatingActionButton) findViewById(R.id.hospitalFab);
+				FloatingActionButton less_Fab = (FloatingActionButton) findViewById(R.id.less_fab);
+
+				//FloatingActionButton hospital = (FloatingActionButton) findViewById(R.id.hospitalFab);
+				TextView churchText = (TextView) findViewById(R.id.church_textView);
+				TextView mosqueText = (TextView) findViewById(R.id.mosque_textView);
+				TextView postOfficeText = (TextView) findViewById(R.id.post_office_textView);
+				TextView petrolStationText = (TextView) findViewById(R.id.petrol_stations_textView);
+				TextView supermarketText = (TextView) findViewById(R.id.supermarket_textView);
+				TextView hotelText = (TextView) findViewById(R.id.hotel_textView);
+				TextView pharmacyText = (TextView) findViewById(R.id.chemst_textView);
+				TextView moreLess = (TextView) findViewById(R.id.more_Less_textView);
+				TextView hospitalText = (TextView) findViewById(R.id.hospital_textView);
+				TextView lessText = (TextView) findViewById(R.id.less_textView);
+
+
+				less_Fab.setVisibility(GONE);
+				lessText.setVisibility(GONE);
+				hospitalFab.setVisibility(View.VISIBLE);
+				hospitalText.setVisibility(View.VISIBLE);
+				pharmacy.setVisibility(View.VISIBLE);
+				pharmacyText.setVisibility(View.VISIBLE);
+				churchFab.setVisibility(View.VISIBLE);
+				churchText.setVisibility(View.VISIBLE);
+				supermarket.setVisibility(View.VISIBLE);
+				supermarketText.setVisibility(View.VISIBLE);
+				hotel.setVisibility(View.VISIBLE);
+				hotelText.setVisibility(View.VISIBLE);
+				petrolStation.setVisibility(View.VISIBLE);
+				petrolStationText.setVisibility(View.VISIBLE);
+				mosque.setVisibility(View.VISIBLE);
+				mosqueText.setVisibility(View.VISIBLE);
+				postOffice.setVisibility(View.VISIBLE);
+				postOfficeText.setVisibility(View.VISIBLE);
+				moreLess.setVisibility(View.VISIBLE);
+
+				// CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+				FloatingActionButton lessFab = (FloatingActionButton) findViewById(R.id.more_less_fab);
+				lessFab.setVisibility(View.VISIBLE);
+				android.widget.GridLayout
+					gridLayout = (android.widget.GridLayout) findViewById(R.id.quickGrid);
+				gridLayout.setUseDefaultMargins(false);
+			}
+		});
+
+		//FloatingActionButton lesserFab = (FloatingActionButton) findViewById(R.id.more_less_fab);
+		lessFab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				// get text from locationEditText and create web service URL
+
+				FloatingActionButton churchFab = (FloatingActionButton) findViewById(R.id.church_fab);
+				FloatingActionButton mosque = (FloatingActionButton) findViewById(R.id.mosque_fab);
+				FloatingActionButton postOffice = (FloatingActionButton) findViewById(R.id.post_office_fab);
+				FloatingActionButton petrolStation = (FloatingActionButton) findViewById(R.id.petrol_station_fab);
+				FloatingActionButton supermarket = (FloatingActionButton) findViewById(R.id.supermarkets_fab);
+				FloatingActionButton hotel = (FloatingActionButton) findViewById(R.id.hotel_fab);
+				FloatingActionButton pharmacy = (FloatingActionButton) findViewById(R.id.pharmacy_fab);
+				FloatingActionButton hospitalFab = (FloatingActionButton) findViewById(R.id.hospitalFab);
+				FloatingActionButton less_Fab = (FloatingActionButton) findViewById(R.id.less_fab);
+
+				//FloatingActionButton hospital = (FloatingActionButton) findViewById(R.id.hospitalFab);
+				TextView churchText = (TextView) findViewById(R.id.church_textView);
+				TextView mosqueText = (TextView) findViewById(R.id.mosque_textView);
+				TextView postOfficeText = (TextView) findViewById(R.id.post_office_textView);
+				TextView petrolStationText = (TextView) findViewById(R.id.petrol_stations_textView);
+				TextView supermarketText = (TextView) findViewById(R.id.supermarket_textView);
+				TextView hotelText = (TextView) findViewById(R.id.hotel_textView);
+				TextView pharmacyText = (TextView) findViewById(R.id.chemst_textView);
+				TextView moreLess = (TextView) findViewById(R.id.more_Less_textView);
+				TextView hospitalText = (TextView) findViewById(R.id.hospital_textView);
+				TextView lessText = (TextView) findViewById(R.id.less_textView);
+
+				less_Fab.setVisibility(View.VISIBLE);
+				lessText.setVisibility(View.VISIBLE);
+				hospitalFab.setVisibility(View.GONE);
+				hospitalText.setVisibility(View.GONE);
+				pharmacy.setVisibility(View.GONE);
+				pharmacyText.setVisibility(GONE);
+				churchFab.setVisibility(View.GONE);
+				churchText.setVisibility(View.GONE);
+				supermarket.setVisibility(View.GONE);
+				supermarketText.setVisibility(View.GONE);
+				hotel.setVisibility(View.GONE);
+				hotelText.setVisibility(View.GONE);
+				petrolStation.setVisibility(View.GONE);
+				petrolStationText.setVisibility(View.GONE);
+				mosque.setVisibility(View.GONE);
+				mosqueText.setVisibility(View.GONE);
+				postOffice.setVisibility(View.GONE);
+				postOfficeText.setVisibility(View.GONE);
+				moreLess.setVisibility(View.GONE);
+
+				// CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
+				FloatingActionButton lessFab = (FloatingActionButton) findViewById(R.id.more_less_fab);
+				lessFab.setVisibility(GONE);
+				android.widget.GridLayout
+					gridLayout = (android.widget.GridLayout) findViewById(R.id.quickGrid);
+				gridLayout.setUseDefaultMargins(true);
+
+
 			}
 		});
 
@@ -429,7 +770,7 @@ public class MainActivity extends AppCompatActivity
 					R.string.read_error,
 					Snackbar.LENGTH_LONG).show();
 				ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
-				loadingSpin.setVisibility(View.GONE);
+				loadingSpin.setVisibility(GONE);
 				// Toast.makeText(this, R.string.read_error, Toast.LENGTH_LONG).show();
 			} else {
 
@@ -446,7 +787,7 @@ public class MainActivity extends AppCompatActivity
 					setFinalLong(location.getDouble(getString(R.string.lng_json)));
 
 					ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
-					loadingSpin.setVisibility(View.GONE);
+					loadingSpin.setVisibility(GONE);
 
 					weatherList.add(new Weather(
 						                           place.getString(getString(R.string.name_json)), // name of place
