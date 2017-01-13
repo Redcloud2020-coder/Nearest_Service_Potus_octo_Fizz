@@ -410,7 +410,8 @@ public class MainActivity extends AppCompatActivity
 				}
 			}
 		});
-
+		
+		// Petrol Station
 		petrolStation.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -436,6 +437,8 @@ public class MainActivity extends AppCompatActivity
 				}
 			}
 		});
+		
+		// Supermarket
 		supermarket.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -462,6 +465,7 @@ public class MainActivity extends AppCompatActivity
 			}
 		});
 
+		// Hotel
 		hotel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -488,6 +492,7 @@ public class MainActivity extends AppCompatActivity
 			}
 		});
 
+		// Pharmacy
 		pharmacy.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -514,7 +519,7 @@ public class MainActivity extends AppCompatActivity
 			}
 		});
 
-
+		// Collapse Fab
 		FloatingActionButton less_Fab = (FloatingActionButton) findViewById(R.id.less_fab);
 		less_Fab.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -571,7 +576,7 @@ public class MainActivity extends AppCompatActivity
 			}
 		});
 
-		//FloatingActionButton lesserFab = (FloatingActionButton) findViewById(R.id.more_less_fab);
+		// FloatingActionButton lesserFab = (FloatingActionButton) findViewById(R.id.more_less_fab);
 		lessFab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
