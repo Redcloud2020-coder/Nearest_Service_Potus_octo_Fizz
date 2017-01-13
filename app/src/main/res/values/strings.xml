@@ -55,4 +55,5 @@
     <string name="pharmacy">Pharmacy</string>
     <string name="church">Church</string>
     <string name="mosque">Mosque</string>
+    <string name="about_item">About</string>
 </resources>

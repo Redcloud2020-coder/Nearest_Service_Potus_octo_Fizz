@@ -100,6 +100,9 @@ public class MainActivity extends AppCompatActivity
 
 
 		final ProgressBar loadingSpin = (ProgressBar) findViewById(R.id.loadingBar);
+		android.widget.GridLayout
+			gridLayout = (android.widget.GridLayout) findViewById(R.id.quickGrid);
+		gridLayout.setUseDefaultMargins(true);
 
 		EditText locationEditText = (EditText) findViewById(R.id.locationEditText);
 		locationEditText.setOnClickListener(
@@ -169,9 +172,9 @@ public class MainActivity extends AppCompatActivity
 		postOffice.setVisibility(View.GONE);
 		postOfficeText.setVisibility(View.GONE);
 		moreLess.setVisibility(View.GONE);
-
-		// CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
 		FloatingActionButton lessFab = (FloatingActionButton) findViewById(R.id.more_less_fab);
+
+
 		lessFab.setVisibility(GONE);
 
 
@@ -181,8 +184,7 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onClick(View view) {
 				// get text from locationEditText and create web service URL
-
-				//	FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+				// FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 				CardView quickCard = (CardView) findViewById(R.id.quickSearchCard);
 				// fab.setVisibility(View.GONE);
 				quickCard.setVisibility(GONE);
@@ -190,9 +192,8 @@ public class MainActivity extends AppCompatActivity
 				EditText locationEditText =
 					(EditText) findViewById(R.id.locationEditText);
 				String trim = locationEditText.getText().toString().replaceAll(" ", "_").trim();
-				locationEditText.setText(trim);
+				// locationEditText.setText(trim);
 				URL url = createURL(trim);
-
 
 				// hide keyboard and initiate a GetPlaceTask to download
 				// weather data from OpenWeatherMap.org in a separate thread
@@ -222,7 +223,6 @@ public class MainActivity extends AppCompatActivity
 				EditText locationEditText =
 					(EditText) findViewById(R.id.locationEditText);
 				locationEditText.setText(R.string.restaurant);
-
 				URL url = createURL(locationEditText.getText().toString().trim());
 
 				// hide keyboard and initiate a GetPlaceTask to download
@@ -258,12 +258,12 @@ public class MainActivity extends AppCompatActivity
 				// hide keyboard and initiate a GetPlaceTask to download
 				// weather data from OpenWeatherMap.org in a separate thread
 				if(url != null) {
+
 					dismissKeyboard(locationEditText);
-
 					loadingSpin.setVisibility(View.VISIBLE);
-
 					GetPlaceTask getLocalWeatherTask = new GetPlaceTask();
 					getLocalWeatherTask.execute(url);
+
 				} else {
 					Snackbar.make(findViewById(R.id.coordinatorLayout),
 						R.string.invalid_url, Snackbar.LENGTH_LONG).show();
@@ -329,6 +329,8 @@ public class MainActivity extends AppCompatActivity
 			}
 		});
 
+
+		// Church Fab
 		churchFab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -355,6 +357,7 @@ public class MainActivity extends AppCompatActivity
 			}
 		});
 
+		// Mosque Fab
 		mosque.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -381,6 +384,7 @@ public class MainActivity extends AppCompatActivity
 			}
 		});
 
+		// Post Office
 		postOffice.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -893,4 +897,6 @@ public class MainActivity extends AppCompatActivity
 
 		}
 	}
+
+
 }
